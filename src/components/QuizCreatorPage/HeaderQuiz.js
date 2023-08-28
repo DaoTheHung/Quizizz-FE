@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
+import FormSave from '../common/Form/FormSave'
 
-export default function HeaderQuiz() {
+export default function HeaderQuiz({data, dataQuestion}) {
+    
     const [showModal, setShowModal] = useState(false)
     return (
         <div className=''>
             {/*Modal xuất bản*/}
-            {showModal && <div className='fixed top-0 z-10 left-0 w-screen flex flex-auto min-h-screen min-w-screen overflow-y-auto flex-col overscroll-contain bg-[#090909cc]'>
+            {showModal && dataQuestion.length === 0 && <div className='fixed z-[999] top-0  left-0 w-screen flex flex-auto min-h-screen min-w-screen overflow-y-auto flex-col overscroll-contain bg-[#090909cc]'>
                 <div className='flex bg-white flex-col gap-6 relative p-6 h-fit  md:min-h-0 md:mx-auto mt-[127px] md:w-1/4 md:rounded-lg'>
                     <div className='flex '>
                         <div className='flex items-center justify-center mr-3 rounded-full w-10 h-10 bg-lilac-faded text-lilac'>
@@ -26,6 +28,11 @@ export default function HeaderQuiz() {
                         <button onClick={() => setShowModal(false)} className='ease-in-out duration-200 h-8 px-4 py-1 text-sm font-semibold rounded bg-lilac text-white hover:bg-light '>Thêm câu hỏi</button>
                     </div>
                 </div>
+            </div>}
+            {/**/}
+             {/*Modal xuất bản*/}
+             {showModal && dataQuestion.length > 0 && <div className='fixed top-0 z-10 left-0 w-screen flex flex-auto min-h-screen  overflow-y-auto flex-col overscroll-contain bg-[#090909cc]'>
+                <FormSave data={data} setShowModal={setShowModal} dataQuestion={dataQuestion}/>
             </div>}
             {/**/}
             <header className='w-full top-0 bg-white shadow flex items-center p-3 sticky'>

@@ -3,7 +3,7 @@ import React from 'react'
 export default function SearchQuiz() {
     return (
         <div>
-            <div className='flex w-[63%] mx-auto transition-all duration-200 flex-col justify-center gap-2 h-auto border border-light-2 bg-white p-4 rounded-b-md shadow-sm '>
+            <div className='flex w-[61%] mx-auto transition-all duration-200 flex-col justify-center gap-2 h-auto border border-light-2 bg-white p-4 rounded-b-md shadow-sm '>
                 <div>
                     Dịch chuyển tức thời từ thư viện Quizizz
                 </div>

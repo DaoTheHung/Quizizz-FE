@@ -35,7 +35,8 @@ export default function SearchBar({ show, setShow }) {
                     <div className='w-max text-sm truncate'>
                       {router.pathname === "/admin/reports" && "Báo cáo"}
                       {router.pathname === "/admin/private" && "Thư viện của tôi"}
-                      {router.pathname === "/admin" && "Thư viện"}
+                      {router.pathname === "/admin"  && "Thư viện"}
+                      {router.pathname === "/admin/quiz/[id]" && "Thư viện"}
                     </div>
                   </button>
                   <div className='flex justify-center items-center w-6 h-6 ml-auto'>

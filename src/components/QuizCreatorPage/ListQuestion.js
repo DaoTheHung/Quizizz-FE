@@ -1,36 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useStore } from '../../../store/useStore'
-import { useQuery } from '@tanstack/react-query'
-import { useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import DataTypeQuiz from './DataTypeQuiz'
 import RemoveQsModal from '../common/ListQuestion/RemoveQsModal'
-export default function ListQuestion() {
+export default function ListQuestion({ data }) {
     const [showDataQs, setShowDataQs] = useState(false)
     const [showModalRemove, setShowModalRemove] = useState(false)
+    const [dataQuestion, setDataQuestion] = useState([])
     const [type, setType] = useState()
 
-    // store
-    const fetchDataQs = useStore(state => state.fetchData)
-
-    const { data, error, isError, isLoading, refetch } = useQuery(['question'], fetchDataQs, {
-        staleTime: 5000,
-        refetchOnWindowFocus: false,
-    })
 
     // Xóa câu hỏi
-    const removeQuestion = useMutation(async (id) => {
-        const res = await axios.delete(`http://localhost:3080/api/question/delete/${id}`)
-        return res.data
-    });
+    // const removeQuestion = useMutation(async (id) => {
+    //     const res = await axios.delete(`http://localhost:3080/api/question/delete/${id}`)
+    //     return res.data
+    // });
+
+    useEffect(() => {
+        const local = JSON.parse(localStorage.getItem('question'))
+        if (local !== null) {
+            setDataQuestion(local)
+        }
+    }, [])
+
     const handleRemoveQuestion = (id) => {
         setType(id)
-      if(type == id) {
-        setShowModalRemove(!showModalRemove)
-      }else{
-        setShowModalRemove(false)
-      }
-       
+        if (type == id) {
+            setShowModalRemove(!showModalRemove)
+        } else {
+            setShowModalRemove(false)
+        }
+
     }
 
     return (
@@ -49,7 +50,7 @@ export default function ListQuestion() {
                 <div className='question-banner  font-semibold w-full py-4 flex items-center  gap-2 text-left text-sm'>
                     <div className='flex items-center gap-2 w-full'>
                         <i className="text-[12px] fa-solid fa-list-check"></i>
-                        <span>{data.data.question.length} Câu hỏi</span>
+                        <span>{dataQuestion?.length} Câu hỏi</span>
                     </div>
                     <button onClick={() => setShowDataQs(true)} type="button" className=' items-center justify-center px-4 py-1.5 text-xs font-semibold h-8 base bg-lilac-faded text-lilac hover:text-light  rounded secondary transition-colors duration-200 ease-in-out flex relative min-w-max  ml-auto'>
                         <i className="text-[11px] fa-solid fa-plus mr-2"></i>
@@ -58,7 +59,7 @@ export default function ListQuestion() {
                 </div>
                 <div className='w-full'>
                     <div className='question-details-card flex flex-col gap-2 group'>
-                        {data.data.question.map((ques) => (
+                        {dataQuestion.map((ques, index) => (
                             <div key={ques.id} className="question-details-card  relative mb-[32px] flex flex-col border border-solid border-light-2 rounded-lg  bg-white">
                                 <div className='flex items-center justify-between p-2 bg-bd-ft rounded-t-lg'>
                                     <div className='relative flex items-center gap-x-2'>
@@ -69,7 +70,7 @@ export default function ListQuestion() {
                                             <i className="text-[12px] fa-regular fa-square-check"></i>
                                         </span>
                                         <h2 className='text-sm text-dark-6'>
-                                            <span>Câu hỏi {data.data.question.length}</span>
+                                            <span>Câu hỏi {index}</span>
                                             <div className='lozenge items-center inline-flex text-xs font-semibold py-0.5 rounded px-1.5 bg-yellow-2 text-bd ml-2'>
                                                 <i className="text-[11px] mr-1 fa-solid fa-bolt-lightning"></i>
                                                 <span>SIÊU</span>
@@ -87,7 +88,7 @@ export default function ListQuestion() {
                                         <button onClick={() => handleRemoveQuestion(ques.id)} className='flex items-center justify-center w-8 h-7 bg-light-3 border border-solid border-light-2 text-dark-6 hover:bg-bd-ft bg-white rounded white transition-colors duration-200 ease-in-out relative min-w-max mr-2 v-popper--has-tooltip'>
                                             <i className="text-[12px] fa-regular fa-trash-can"></i>
                                         </button>
-                                        {!showModalRemove && type == ques.id  && <RemoveQsModal id={ques.id} removeQuestion={removeQuestion} showModalRemove={showModalRemove} setShowModalRemove={setShowModalRemove} />}
+                                        {!showModalRemove && type == ques.id && <RemoveQsModal id={ques.id} setDataQuestion={setDataQuestion} dataQuestion={dataQuestion} showModalRemove={showModalRemove} setShowModalRemove={setShowModalRemove} />}
                                     </div>
                                 </div>
                                 <div className='p-4 shadow-sm rounded-t-lg'>
@@ -104,22 +105,21 @@ export default function ListQuestion() {
 
                                     <div className='flex flex-wrap'>
 
-                                        <div className='flex items-start mb-2 w-1/2'>
-                                            <span className={`w-4 h-4 rounded-full my-1 mr-2 shrink-0 relative ${ques.answare === ques.question_a ? "bg-green-500" : "bg-red-600"}`}></span>
-                                            <span className='text-sm text-dark-2'>{ques.question_a}</span>
-                                        </div>
-                                        <div className='flex items-start mb-2 w-1/2'>
-                                            <span className={`w-4 h-4 rounded-full my-1 mr-2 shrink-0 relative ${ques.answare === ques.question_b ? "bg-green-500" : "bg-red-600"}`}></span>
-                                            <span className='text-sm text-dark-2'>{ques.question_b}</span>
-                                        </div>
-                                        <div className='flex items-start mb-2 w-1/2'>
-                                            <span className={`w-4 h-4 rounded-full my-1 mr-2 shrink-0 relative ${ques.answare === ques.question_c ? "bg-green-500" : "bg-red-600"}`}></span>
-                                            <span className='text-sm text-dark-2'>{ques.question_c}</span>
-                                        </div>
-                                        <div className='flex items-start mb-2 w-1/2'>
-                                            <span className={`w-4 h-4 rounded-full my-1 mr-2 shrink-0 relative ${ques.answare === ques.question_d ? "bg-green-500" : "bg-red-600"}`}></span>
-                                            <span className='text-sm text-dark-2'>{ques.question_d}</span>
-                                        </div>
+                                        {ques.question.map((item, index) => (
+                                            <div key={index} className='flex items-start mb-2 w-1/2'>
+                                                <span className={`w-4 h-4 rounded-full my-1 mr-2 shrink-0 relative ${ques.answare.map((itemA, index) => itemA === item ? "bg-green-500" : "bg-red-600")}`}></span>
+                                                <span className='text-sm text-dark-2'>{item}</span>
+                                            </div>
+                                        ))}
+                                        {ques.answare.map((item, index) => (
+                                            <div key={index} className='flex items-center mb-2 w-1/2'>
+                                                <span className='w-4 h-4 rounded-full my-1 mr-2 shrink-0 relative bg-light-2'>
+                                                    <i className="flex text-[9px] items-center far fa-chevron-right absolute transform -translate-x-1/2 -translate-y-1/2 text-dark-4 top-2/4 left-2/4 fa-solid fa-chevron-right"></i>
+                                                </span>
+                                                <span className='text-sm text-dark-2'>{item}</span>
+                                            </div>
+                                        ))}
+
                                     </div>
 
 

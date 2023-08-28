@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { dataQuiz } from '../common/Datafill/Data'
+import { dataQuiz } from '../../common/Datafill/Data'
+import { useRouter } from 'next/router'
 
-export default function HeaderCreateQs() {
+export default function HeaderCreateQs({ setTypeQuiz, typeQuiz }) {
+    const router = useRouter()
     const [showDataQuiz, setShowDataQuiz] = useState(false)
-    const [typeQuiz, setTypeQuiz] = useState('Đa lựa chọn')
 
     // các kiểu chữ
+    const [iconType, setIconType] = useState('')
     const [bg1, setBg1] = useState(false)
     const [bg2, setBg2] = useState(false)
     const [bg3, setBg3] = useState(false)
@@ -46,10 +48,12 @@ export default function HeaderCreateQs() {
     }
 
     // Hiện các chủ đề quiz
-    const handleShowDataQuiz = (name) => {
+    const handleShowDataQuiz = (name, icon) => {
+        setIconType(icon)
         setTypeQuiz(name)
         setShowDataQuiz(false)
     }
+
     return (
         <header className='flex items-center p-2 bg-purple-4'>
             <Link href='/admin/quiz/creator'>
@@ -117,10 +121,10 @@ export default function HeaderCreateQs() {
                 <div className=' flex relative rounded w-full'>
                     <button onClick={() => setShowDataQuiz(true)} className='py-2 pl-2 pr-1 text-xs h-8 cursor-pointer bg-[#09090980] text-light-3 hover:bg-[#09090999]  w-full flex rounded font-semibold  whitespace-nowrap items-center'>
                         <div className='relative flex items-center justify-center p-1 bg-brand-b text-white rounded-sm mr-2'>
-                            <i className="text-[10px] fa-regular fa-square-check"></i>
+                            <i className={iconType}></i>
                         </div>
                         <div className='text-white mr-2'>
-                            {typeQuiz}
+                            {typeQuiz ? typeQuiz : `${router.query.games}`}
                         </div>
                         <div className='text-white w-4 h-4 items-center justify-center flex relative ml-auto'>
                             {showDataQuiz ? <i className="text-[11px] fa-solid fa-caret-up"></i> : <i className="text-[11px] fa-solid fa-caret-down"></i>}
@@ -131,7 +135,7 @@ export default function HeaderCreateQs() {
                             <ul className='overflow-auto h-[630px]'>
                                 {dataQuiz.slice(0, 9).map((item) => (
 
-                                    <div onClick={() => handleShowDataQuiz(item.name)} key={item.id} className='h-fit py-1.5 px-3  hover:bg-[#0909090d]'>
+                                    <div onClick={() => handleShowDataQuiz(item.name, item.icon)} key={item.id} className='h-fit py-1.5 px-3  hover:bg-[#0909090d]'>
 
                                         <button className='flex items-center p-1 w-full text-dark-3 '>
                                             <div className='relative w-6 h-6 mr-2 rounded'>
@@ -169,7 +173,7 @@ export default function HeaderCreateQs() {
                                 ))}
                                 {dataQuiz.slice(14, 15).map((item) => (
                                     <div key={item.id} className='h-fit py-1.5 px-3  hover:bg-[#0909090d]'>
-                                        <div onClick={() => handleShowDataQuiz(item.name)} class Name='h-fit'>
+                                        <div onClick={() => handleShowDataQuiz(item.name)} className='h-fit'>
                                             <button className='flex items-center p-1 w-full text-dark-3 '>
                                                 <div className='relative w-6 h-6 mr-2 rounded'>
                                                     <div className=' relative flex items-center justify-center bg-brand-a text-white rounded h-full aspect-square'>

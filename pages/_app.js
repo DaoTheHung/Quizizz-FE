@@ -14,14 +14,13 @@ function MyApp({
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider session={session}>
-
+    <SessionProvider session={session}>
+      <QueryClientProvider client={queryClient}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </SessionProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </SessionProvider>
   )
 }
 

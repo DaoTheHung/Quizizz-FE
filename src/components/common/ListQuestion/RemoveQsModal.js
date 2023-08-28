@@ -2,24 +2,19 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useStore } from '../../../../store/useStore'
 
-export default function RemoveQsModal({ setShowModalRemove, showModalRemove, removeQuestion, id }) {
-    const fetchDataQs = useStore(state => state.fetchData)
+export default function RemoveQsModal({ setShowModalRemove, showModalRemove, dataQuestion, setDataQuestion, id }) {
+    // const fetchDataQs = useStore(state => state.fetchData)
 
-    const { data, error, isError, isLoading, refetch } = useQuery(['question'], fetchDataQs, {
-        staleTime: 5000,
-        refetchOnWindowFocus: false,
-    })
+    // const { data, error, isError, isLoading, refetch } = useQuery(['question'], fetchDataQs, {
+    //     staleTime: 5000,
+    //     refetchOnWindowFocus: false,
+    // })
     const hanldeRemoveQs = () => {
+        const removeQs = dataQuestion.filter(item => !(item.id === id))
+        setDataQuestion(removeQs)
+        localStorage.setItem('question', JSON.stringify(removeQs))
         setShowModalRemove(false)
-        removeQuestion.mutate(id,
-            {
-                onSuccess: (response) => {
-                    if (response) {
-                        refetch()
-                    }
-                }
-            }
-        )
+
     }
     return (
         <>

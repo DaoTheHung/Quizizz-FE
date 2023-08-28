@@ -11,7 +11,6 @@ import HeaderPlayer from "./HeaderPlayer";
 export const Layout = ({ children }) => {
     const router = useRouter()
     const [show, setShow] = useState(false)
-
     // Show modal create
     const [showModal, setShowModal] = useState(false)
     return (
@@ -32,25 +31,41 @@ export const Layout = ({ children }) => {
             </Head>
             <div className="flex w-full h-full">
 
-                {/*Admin */}
-                {router.pathname === "/login"
-                    || router.pathname === '/'
-                    || router.pathname === '/admin/quiz/creator'
-                    || router.pathname === '/admin/quiz/creator/createQuestion'
-                    || router.pathname === '/signup'
-                    || router.pathname === '/join' ? "" : <Navbar showModal={showModal} setShowModal={setShowModal} />}
 
                 {router.pathname === "/login"
                     || router.pathname === '/'
                     || router.pathname === '/admin/quiz/creator'
                     || router.pathname === '/admin/quiz/creator/createQuestion'
                     || router.pathname === '/signup'
-                    || router.pathname === '/join' ? "" : <SearchBar show={show} setShow={setShow} />}
+                    || router.pathname === '/join'
+                    || router.pathname === '/admin/quiz/startV4/[room]'
+                    || router.pathname === '/join/pre-game/running/[id]'
+                    || router.pathname === '/join/game/[id]'
+                    || router.pathname === '/playgame/[id]'
+                    || router.pathname === '/admin/presentation/[id]'
+                    || router.pathname === '/admin/quiz/team/[id]'
+                    ? "" : <Navbar showModal={showModal} setShowModal={setShowModal} />}
+
+                {router.pathname === "/login"
+                    || router.pathname === '/'
+                    || router.pathname === '/admin/quiz/creator'
+                    || router.pathname === '/admin/quiz/creator/createQuestion'
+                    || router.pathname === '/signup'
+                    || router.pathname === '/join'
+                    || router.pathname === '/admin/quiz/start_new/[name]'
+                    || router.pathname === '/admin/quiz/startV4/[room]'
+                    || router.pathname === '/join/pre-game/running/[id]'
+                    || router.pathname === '/join/game/[id]'
+                    || router.pathname === '/playgame/[id]'
+                    || router.pathname === '/admin/quiz/tp/[id]'
+                    || router.pathname === '/admin/presentation/[id]'
+                    || router.pathname === '/admin/quiz/team/[id]'
+                    ? "" : <SearchBar show={show} setShow={setShow} />}
 
                 {/*Player */}
-               <div className="font-quick">
-               {router.pathname === '/join' && <HeaderPlayer />}
-               </div>
+                <div className="font-quick">
+                    {router.pathname === '/join' && <HeaderPlayer />}
+                </div>
                 {children}
 
 

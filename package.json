@@ -15,10 +15,13 @@
     "next": "13.4.10",
     "next-auth": "^4.22.1",
     "react": "18.2.0",
+    "react-datepicker": "^4.16.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.2",
     "react-social-login": "^3.4.17",
+    "socket.io-client": "^4.7.2",
     "tailwind-scrollbar-hide": "^1.1.7",
+    "uuid": "^9.0.0",
     "zustand": "^4.3.9"
   },
   "devDependencies": {

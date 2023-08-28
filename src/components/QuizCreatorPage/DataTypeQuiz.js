@@ -1,10 +1,13 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 
+
 export default function DataTypeQuiz() {
+    const router = useRouter()
     return (
         <>
-            
+
             <div className='flex w-[723px]  mx-auto bg-white rounded-l-lg rounded-r-lg border'>
                 <div className='w-[416px] px-3  py-4'>
                     <div className='mb-2 text-xs font-semibold  text-dark-4'>
@@ -14,7 +17,7 @@ export default function DataTypeQuiz() {
                         {/* */}
                         <div className='h-fit'>
                             <Link href='/admin/quiz/creator/createQuestion'>
-                                <button className='flex items-center p-1 rounded-lg w-full text-dark-3 hover:bg-[#0909090d]'>
+                                <button type='button' className='flex items-center p-1 rounded-lg w-full text-dark-3 hover:bg-[#0909090d]'>
                                     <div className='relative w-6 h-6 mr-2 rounded'>
                                         <div className=' relative flex items-center justify-center bg-brand-b text-white rounded h-full aspect-square'>
                                             <i className="text-[11px] fa-regular fa-square-check"></i>
@@ -59,19 +62,22 @@ export default function DataTypeQuiz() {
                             </button>
                         </div>
                         {/* */}
+
                         <div className='h-fit'>
-                            <button className='flex items-center p-1 rounded-lg w-full text-dark-3 hover:bg-[#0909090d]'>
-                                <div className='relative w-6 h-6 mr-2 rounded'>
-                                    <div className=' relative flex items-center justify-center bg-brand-b text-white rounded h-full aspect-square'>
-                                        <i className="text-[11px] fa-solid fa-rectangle-ad"></i>
+                            <Link href='/admin/quiz/creator/createQuestion?games=fillword'>
+                                <button onClick={() => router.query = "Điền từ"} type='button' className='flex items-center p-1 rounded-lg w-full text-dark-3 hover:bg-[#0909090d]'>
+                                    <div className='relative w-6 h-6 mr-2 rounded'>
+                                        <div className=' relative flex items-center justify-center bg-brand-b text-white rounded h-full aspect-square'>
+                                            <i className="text-[11px] fa-solid fa-rectangle-ad"></i>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className='flex items-center justify-between w-full'>
-                                    <div className='flex  text-sm font-semibold text-left truncate whitespace-normal text-dark-6 '>
-                                        Điền từ
+                                    <div className='flex items-center justify-between w-full'>
+                                        <div className='flex  text-sm font-semibold text-left truncate whitespace-normal text-dark-6 '>
+                                            Điền từ
+                                        </div>
                                     </div>
-                                </div>
-                            </button>
+                                </button>
+                            </Link>
                         </div>
                         {/* */}
                         <div className='h-fit'>

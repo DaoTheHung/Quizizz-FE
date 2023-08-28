@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/router";
-import { useStore } from '../../../store/useStore'
+import { useStore } from '../../../../store/useStore'
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { dataScore, dataTimer, dataCheckAs } from '../common/Datafill/Data'
+import { dataScore, dataTimer, dataCheckAs } from '../../common/Datafill/Data'
+import { v4 as uuid } from 'uuid'
 import axios from 'axios'
 
-export default function ContentCreateQs() {
+export default function ContentCreateQs({ typeQuiz }) {
     const router = useRouter()
+    
+    const [isData, setIsData] = useState(false)
     const [showCheck, setShowCheck] = useState(false)
     const [typeId, setTypeId] = useState()
     const [value, setValue] = useState('')
+    const [question, setQuestion] = useState([])
 
     const handleCheckAnsware = (id, valueQs) => {
         setTypeId(id)
@@ -29,9 +33,13 @@ export default function ContentCreateQs() {
     const [scoreQs, setScoreQs] = useState(1)
     const [showScoreQs, setShowScoreQs] = useState(false)
 
+    useEffect(() => {
 
-    // const dataCreateQuestion = useStore(state => state.createQuestion)
-    // const fetchCreateQuestion = useStore(state => state.fetchCreateQuestion)
+        const local = JSON.parse(localStorage.getItem('question'))
+        if (local !== null) {
+            setQuestion(local)
+        }
+    }, [isData])
 
 
     // Thêm câu hỏi
@@ -39,7 +47,7 @@ export default function ContentCreateQs() {
         const res = await axios.post('http://localhost:3080/api/question/add', data)
         return res.data
     });
-
+    const fakeData = [...question]
     const {
         handleSubmit,
         register,
@@ -48,26 +56,29 @@ export default function ContentCreateQs() {
     } = useForm({ mode: "onSubmit" });
     const onSubmit = (data) => {
 
-
         const newQuestion = {
+            id: uuid(),
             questionTitle: data.questionTitle,
-            question_a: data.question_a,
-            question_b: data.question_b,
-            question_c: data.question_c,
-            question_d: data.question_d,
-            answare: value,
+            questionType: typeQuiz,
+            question: [data.question_a, data.question_b, data.question_c, data.question_d],
+
+            answare: [value],
             timer: timeQs,
             score: scoreQs,
         }
+        fakeData.push(newQuestion)
+        setQuestion(fakeData)
+        localStorage.setItem('question', JSON.stringify(fakeData))
+        router.push('/admin/quiz/creator?at=64ca3d23528db700079f5291')
         createQuestion.mutate(newQuestion, {
             onSuccess: (response) => {
                 if (response) {
-                    router.push('/admin/quiz/creator?at=64c7317ad0b6370007bae084')
                 }
             }
         })
 
     }
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='h-auto'>
